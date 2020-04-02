@@ -26,7 +26,8 @@ module.exports.login = {
     if (userProfile === null) {
       Boom.unauthorized('Invalid login');
     }
-    const token = sign(userProfile);
-    return token;
+    const accessToken = sign(userProfile);
+
+    return {accessToken};
   },
 };
