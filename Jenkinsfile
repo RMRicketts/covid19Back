@@ -8,7 +8,7 @@ pipeline {
     }
     stage('post to api'){
       steps {
-        sh 'node postCovidData.js'
+        sh 'node /var/scripts/postCovidData.js'
       }
     }
   }
