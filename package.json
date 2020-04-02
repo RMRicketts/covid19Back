@@ -1,0 +1,21 @@
+{
+  "name": "covid19Back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Ricketts",
+  "license": "ISC",
+  "repository": "https://github.com/RMRicketts/covid19Back",
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/joi": "^17.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongodb": "^3.5.5",
+    "qs": "^6.9.3"
+  }
+}
