@@ -8,7 +8,7 @@ pipeline {
     }
     stage('post to api'){
       steps {
-        sh 'node ./us-states.csv''
+        sh 'node postCovidData.js'
       }
     }
   }
