@@ -4,7 +4,11 @@ pipeline {
     stage('build') {
       steps {
         git url: 'https://github.com/nytimes/covid-19-data'
-        sh 'ls'
+      }
+    }
+    stage('post to api'){
+      steps {
+        sh 'node ./us-states.csv''
       }
     }
   }

@@ -26,10 +26,12 @@ module.exports.uploadData = {
     const {data} = request.server.app;
     const {payload} = request;
     try {
-      await data.remove();
+      await data.deleteMany();
       await data.insertMany(payload.data);
     } catch (e) {
+      console.log(e);
       return Boom.badImplementation();
     }
+    return {success: true};
   },
 };

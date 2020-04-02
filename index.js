@@ -11,7 +11,7 @@ process.on('unhandledRejection', err => {
 });
 
 const init = async () => {
-  const options = {port: 3000, host: 'localhost', query: {parser: query => qs.parse(query)}};
+  const options = {port: 8081, host: 'localhost', query: {parser: query => qs.parse(query)}};
 
   const server = Hapi.server(options);
 

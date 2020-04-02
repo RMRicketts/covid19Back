@@ -12,15 +12,12 @@ module.exports = async server => {
       connectionURI,
       {useUnifiedTopology: true},
     );
-    dtdb = dbs.db('deliveryTrack');
+    dtdb = dbs.db('covid');
   } catch (e) {
     console.log(e);
     throw new Error('unable to connect to Mongo instance');
   }
-  const collections = [
-    'accounts',
-    'data',
-  ];
+  const collections = ['accounts', 'data'];
 
   console.log('connected to Database');
 
