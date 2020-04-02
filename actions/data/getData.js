@@ -1,16 +1,35 @@
-"use strict";
+'use strict';
 
 const Boom = require('@hapi/boom');
 
 module.exports.getData = {
-  method: "GET",
-  path: '/api/v1/'
+  method: 'GET',
+  path: '/api/1/getData',
   options: {
-    pre: [ require('../../modules/auth/auth.js') ]
+    pre: [require('../../modules/auth/auth.js')],
   },
-  hander: async (request, h) => {
-    const {data} = request.server.app
-    const {query} = request
-    return await data.find(query).toArray()
-  }
-}
+  handler: async (request, h) => {
+    const {data} = request.server.app;
+    const {query} = request;
+    try {
+      return await data.find(query).toArray();
+    } catch (e) {
+      return Boom.badImplementation();
+    }
+  },
+};
+
+module.exports.uploadData = {
+  method: 'POST',
+  path: '/api/1/postData',
+  handler: async (request, h) => {
+    const {data} = request.server.app;
+    const {payload} = request;
+    try {
+      await data.remove();
+      await data.insertMany(payload.data);
+    } catch (e) {
+      return Boom.badImplementation();
+    }
+  },
+};

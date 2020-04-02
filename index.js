@@ -1,11 +1,27 @@
 'use strict';
 
-//const s3 = require('./s3.js');
-const db = require('./db.js');
+const Hapi = require('@hapi/hapi');
+const actions = require('./actions');
+const initialize = require('./initializers');
+const qs = require('qs');
 
-module.exports = async server => {
-  server = await db(server);
-//  server = await s3(server);
+process.on('unhandledRejection', err => {
+  console.log(err);
+  process.exit(1);
+});
 
-  return server;
+const init = async () => {
+  const options = {port: 3000, host: 'localhost', query: {parser: query => qs.parse(query)}};
+
+  const server = Hapi.server(options);
+
+  await initialize(server);
+
+  await actions(server);
+
+  await server.start();
+
+  console.log('Server is running on %s', server.info.uri);
 };
+
+init();
