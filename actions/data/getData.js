@@ -12,7 +12,8 @@ module.exports.getData = {
     const { data } = request.server.app;
     const { query } = request;
     try {
-      return await data.find(query).toArray();
+      let data = await data.find(query).toArray();
+      return { data: data };
     } catch (e) {
       return Boom.badImplementation();
     }
