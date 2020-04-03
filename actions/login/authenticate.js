@@ -5,7 +5,7 @@ const hash = require('../../utils/en.js').hash;
 
 module.exports.login = {
   method: 'POST',
-  path: '/api/v1/login',
+  path: '/api/1/login',
   handler: async (request, h) => {
     let {accountMembers} = request.server.app;
     let {params, payload} = request;

@@ -1,12 +1,13 @@
 const Boom = require('@hapi/boom');
 const jwt = require('../../utils/jwt.js');
-const {token} = require('../../../configs/config.js').covidInfo;
+const {covidInfo} = require('../../../configs/config.js');
 
 module.exports = {
   assign: 'authProfile',
   method: async (req, h) => {
-    let accessToken = req.headers.accessToken;
-    if (accessToken === token) {
+    let accessToken = req.headers.accesstoken;
+    if (accessToken === covidInfo.token) {
+      console.log('here')
       return {authorized: true};
     }
     try {
