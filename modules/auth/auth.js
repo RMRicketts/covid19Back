@@ -1,6 +1,6 @@
 const Boom = require('@hapi/boom');
 const jwt = require('../../utils/jwt.js');
-const {covidInfo} = require('../../../configs/config.js');
+const {covidInfo} = require('../../configs/config.js');
 
 module.exports = {
   assign: 'authProfile',

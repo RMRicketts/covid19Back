@@ -1,7 +1,7 @@
 'use strict';
 
 const mongo = require('mongodb');
-const configs = require('../../configs/config.js');
+const configs = require('../configs/config.js');
 
 module.exports = async server => {
   const connectionURI = process.NODE_ENV === 'production' ? configs.mongoProd : configs.mongoDev;

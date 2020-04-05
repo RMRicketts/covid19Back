@@ -12,7 +12,6 @@ process.on("unhandledRejection", err => {
 const init = async () => {
   const options = {
     port: 8081,
-    host: "localhost",
     query: { parser: query => qs.parse(query) },
     routes: {
       cors: {
@@ -37,7 +36,7 @@ const init = async () => {
   let server = Hapi.server(options);
 
   server.ext(`onPreResponse`, (request, h) => {
-    if (request !== undefined) {
+    if (request.response !== undefined && typeof request.response.header !== 'object') {
       request.response.header("Access-Control-Allow-Origin", "*");
       request.response.header("Access-Control-Allow-Headers", "accesstoken");
     }

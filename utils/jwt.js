@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {dtbackDefaultSalt, dtbackDefaultSecret, dtbackPK} = require('../../configs/config.js');
+const {dtbackDefaultSalt, dtbackDefaultSecret, dtbackPK} = require('../configs/config.js');
 const en = require('./en.js').encrypt;
 const de = require('./de.js').decrypt;
 

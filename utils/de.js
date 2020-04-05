@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const {dtbackCipherAlg} = require('../../configs/config.js');
+const {dtbackCipherAlg} = require('../configs/config.js');
 
 module.exports.decrypt = (payload, secret, salt) => {
   const alg = dtbackCipherAlg;
