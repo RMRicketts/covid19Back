@@ -53,7 +53,28 @@ module.exports.getData = {
         .toArray();
       let tmp = { "United States": [] };
       let map = {};
-      let intKeys = [];
+      let intKeys = [
+        "positive",
+        "negative",
+        "pending",
+        "hospitalizedCurrently",
+        "hospitalizedCumulative",
+        "inIcuCurrently",
+        "inIcuCumulative",
+        "onVentilatorCurrently",
+        "onVentilatorCumulative",
+        "recovered",
+        "death",
+        "hospitalized",
+        "total",
+        "totalTestResults",
+        "posNeg",
+        "deathIncrease",
+        "hospitalizedIncrease",
+        "negativeIncrease",
+        "positiveIncrease",
+        "totalTestResultsIncrease"
+      ];
       for (let obj of set) {
         if (tmp[obj._id] === undefined) {
           tmp[obj._id] = [];
@@ -63,17 +84,17 @@ module.exports.getData = {
           if (map[d.date] === undefined) {
             map[d.date] = {};
             for (let key of Object.keys(d)) {
-              if (typeof d[key] === "number") {
-                intKeys.push(key);
+              if (intKeys.indexOf(key) !== -1) {
                 map[d.date][key] = 0;
               }
             }
           }
           for (let key of Object.keys(d)) {
             if (intKeys.indexOf(key) > 0) {
-              let num = d[key] === null ? 0 : d[key];
+              let num = d[key] === null ? 0 : Number(d[key]);
               map[d.date][key] = map[d.date][key] + num;
             } else {
+              d.state = "United States";
               map[d.date][key] = d[key];
             }
           }
