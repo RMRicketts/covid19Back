@@ -13,6 +13,7 @@
     "@hapi/boom": "^9.1.0",
     "@hapi/hapi": "^19.1.1",
     "@hapi/joi": "^17.1.0",
+    "hapi-cors-headers": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongodb": "^3.5.5",

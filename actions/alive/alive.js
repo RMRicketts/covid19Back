@@ -10,3 +10,13 @@ module.exports.amAlive = {
     };
   },
 };
+
+module.exports.stillAlive = {
+  method: 'GET',
+  path: '/alive',
+  handler: (request, h) => {
+    return {
+      alive: true,
+    };
+  },
+};

@@ -11,10 +11,15 @@ module.exports.getData = {
   handler: async (request, h) => {
     const { data } = request.server.app;
     const { query } = request;
+    console.log("request made to getData", query);
     try {
-      let data = await data.find(query).toArray();
-      return { data: data };
+      let set = await data.find({}).toArray();
+      let pkg = {};
+      pkg.data = set;
+      let response = h.response(pkg);
+      return response;
     } catch (e) {
+      console.log("failed");
       return Boom.badImplementation();
     }
   }
@@ -29,6 +34,7 @@ module.exports.uploadData = {
   handler: async (request, h) => {
     const { data } = request.server.app;
     const { payload } = request;
+    console.log("request made to uploadData");
     try {
       await data.deleteMany();
       await data.insertMany(payload.data);

@@ -1,19 +1,46 @@
-'use strict';
+"use strict";
 
-const Hapi = require('@hapi/hapi');
-const actions = require('./actions');
-const initialize = require('./initializers');
-const qs = require('qs');
+const Hapi = require("@hapi/hapi");
+const actions = require("./actions");
+const initialize = require("./initializers");
+const qs = require("qs");
 
-process.on('unhandledRejection', err => {
+process.on("unhandledRejection", err => {
   console.log(err);
-  process.exit(1);
 });
 
 const init = async () => {
-  const options = {port: 8081, host: 'localhost', query: {parser: query => qs.parse(query)}};
+  const options = {
+    port: 8081,
+    host: "localhost",
+    query: { parser: query => qs.parse(query) },
+    routes: {
+      cors: {
+        origin: "ignore",
+        additionalHeaders: [
+          "Accept",
+          "Access-Control-Request-Method",
+          "Access-Control-Allow-Headers: Origin, Content-Type, x-ms-request-id , Authorization",
+          "Access-Control-Allow-Headers",
+          "Access-Control-Allow-Origin",
+          "Accept",
+          "Authorization",
+          "Content-Type",
+          "If-None-Match",
+          "Accept-language",
+          'accesstoken'
+        ]
+      }
+    }
+  };
 
-  const server = Hapi.server(options);
+  let server = Hapi.server(options);
+
+  server.ext(`onPreResponse`, (request, h) => {
+    request.response.header('Access-Control-Allow-Origin','*')
+    request.response.header('Access-Control-Allow-Headers', 'Accept,Authorization,Content-Type,If-None-Match,Accept,Access-Control-Request-Method,Access-Control-Allow-Headers: Origin, Content-Type, x-ms-request-id, Authorization,Access-Control-Allow-Headers,Access-Control-Allow-Origin,Accept,Authorization,Content-Type,If-None-Match,Accept-language,accesstoken')
+    return h.continue;
+  });
 
   await initialize(server);
 
@@ -21,7 +48,7 @@ const init = async () => {
 
   await server.start();
 
-  console.log('Server is running on %s', server.info.uri);
+  console.log("Server is running on %s", server.info.uri);
 };
 
 init();
