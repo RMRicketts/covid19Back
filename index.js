@@ -28,7 +28,7 @@ const init = async () => {
           "Content-Type",
           "If-None-Match",
           "Accept-language",
-          'accesstoken'
+          "accesstoken"
         ]
       }
     }
@@ -37,8 +37,8 @@ const init = async () => {
   let server = Hapi.server(options);
 
   server.ext(`onPreResponse`, (request, h) => {
-    request.response.header('Access-Control-Allow-Origin','*')
-    request.response.header('Access-Control-Allow-Headers', 'Accept,Authorization,Content-Type,If-None-Match,Accept,Access-Control-Request-Method,Access-Control-Allow-Headers: Origin, Content-Type, x-ms-request-id, Authorization,Access-Control-Allow-Headers,Access-Control-Allow-Origin,Accept,Authorization,Content-Type,If-None-Match,Accept-language,accesstoken')
+    request.response.header("Access-Control-Allow-Origin", "*");
+    request.response.header('Access-Control-Allow-Headers','accesstoken')
     return h.continue;
   });
 
