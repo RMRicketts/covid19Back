@@ -20,11 +20,31 @@ module.exports.getData = {
               _id: "$state",
               data: {
                 $push: {
-                  state: "$state",
                   date: "$date",
+                  state: "$state",
+                  positive: "$positive",
+                  negative: "$negative",
+                  pending: "$pending",
+                  hospitalizedCurrently: "$hospitalizedCurrently",
+                  hospitalizedCumulative: "$hospitalizedCumulative",
+                  inIcuCurrently: "$inIcuCurrently",
+                  inIcuCumulative: "$inIcuCumulative",
+                  onVentilatorCurrently: "$onVentilatorCurrently",
+                  onVentilatorCumulative: "$onVentilatorCumulative",
+                  recovered: "$recovered",
+                  hash: "$hash",
+                  dateChecked: "$dateChecked",
+                  death: "$death",
+                  hospitalized: "$hospitalized",
+                  total: "$total",
+                  totalTestResults: "$totalTestResults",
+                  posNeg: "$posNeg",
                   fips: "$fips",
-                  cases: "$cases",
-                  deaths: "$deaths"
+                  deathIncrease: "$deathIncrease",
+                  hospitalizedIncrease: "$hospitalizedIncrease",
+                  negativeIncrease: "$negativeIncrease",
+                  positiveIncrease: "$positiveIncrease",
+                  totalTestResultsIncrease: "$totalTestResultsIncrease"
                 }
               }
             }
@@ -33,6 +53,7 @@ module.exports.getData = {
         .toArray();
       let tmp = { "United States": [] };
       let map = {};
+      let intKeys = [];
       for (let obj of set) {
         if (tmp[obj._id] === undefined) {
           tmp[obj._id] = [];
@@ -40,17 +61,27 @@ module.exports.getData = {
         for (let d of obj.data) {
           tmp[obj._id].push(d);
           if (map[d.date] === undefined) {
-            map[d.date] = {
-              deaths: 0,
-              cases: 0
-            };
+            map[d.date] = {};
+            for (let key of Object.keys(d)) {
+              if (typeof d[key] === "number") {
+                intKeys.push(key);
+                map[d.date][key] = 0;
+              }
+            }
           }
-          map[d.date].deaths = map[d.date].deaths + Number(d.deaths);
-          map[d.date].cases = map[d.date].cases + Number(d.cases);
+          for (let key of Object.keys(d)) {
+            if (intKeys.indexOf(key) > 0) {
+              let num = d[key] === null ? 0 : d[key];
+              map[d.date][key] = map[d.date][key] + num;
+            } else {
+              map[d.date][key] = d[key];
+              map[d.date].state = "United States";
+            }
+          }
         }
       }
       for (let date of Object.keys(map)) {
-        tmp["United States"].push({ date: date, ...map[date] });
+        tmp["United States"].push({ date: new Date(date), ...map[date] });
       }
       let pkg = {};
       pkg.covidData = tmp;

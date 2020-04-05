@@ -27,11 +27,21 @@ let upload = async () => {
 
   let response = await axios(goog);
 
+  for (let e of response.data) {
+    e.date = new Date(
+      e.date.toString().substr(0, 4) +
+        "-" +
+        e.date.toString().substr(4, 2) +
+        "-" +
+        e.date.toString().substr(6, 2)
+    );
+  }
+
   pkg.data.data = response.data;
 
   let ref = [];
   try {
-    return axios(pkg);
+    await axios(pkg);
   } catch (e) {
     console.log(e);
   }
