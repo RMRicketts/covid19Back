@@ -37,8 +37,10 @@ const init = async () => {
   let server = Hapi.server(options);
 
   server.ext(`onPreResponse`, (request, h) => {
-    request.response.header("Access-Control-Allow-Origin", "*");
-    request.response.header('Access-Control-Allow-Headers','accesstoken')
+    if (request !== undefined) {
+      request.response.header("Access-Control-Allow-Origin", "*");
+      request.response.header("Access-Control-Allow-Headers", "accesstoken");
+    }
     return h.continue;
   });
 
