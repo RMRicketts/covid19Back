@@ -48,7 +48,8 @@ module.exports.getData = {
                 }
               }
             }
-          }
+          },
+          { $sort: { "data.date": 1 } }
         ])
         .toArray();
       let tmp = { "United States": [] };
@@ -75,14 +76,18 @@ module.exports.getData = {
               map[d.date][key] = map[d.date][key] + num;
             } else {
               map[d.date][key] = d[key];
-              map[d.date].state = "United States";
             }
           }
         }
       }
       for (let date of Object.keys(map)) {
+        let d = new Date(date);
+        map[date].date = d;
         tmp["United States"].push({ date: new Date(date), ...map[date] });
       }
+      tmp["United States"] = tmp["United States"].sort((p, n) => {
+        n.date - p.date;
+      });
       let pkg = {};
       pkg.covidData = tmp;
       let response = h.response(pkg);
