@@ -7,7 +7,6 @@ module.exports = {
   method: async (req, h) => {
     let accessToken = req.headers.accesstoken;
     if (accessToken === covidInfo.token) {
-      console.log('here')
       return {authorized: true};
     }
     try {

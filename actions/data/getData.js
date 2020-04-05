@@ -48,8 +48,7 @@ module.exports.getData = {
                 }
               }
             }
-          },
-          { $sort: { "data.date": 1 } }
+          }
         ])
         .toArray();
       let tmp = { "United States": [] };
@@ -85,12 +84,12 @@ module.exports.getData = {
         map[date].date = d;
         tmp["United States"].push({ date: new Date(date), ...map[date] });
       }
-      tmp["United States"] = tmp["United States"].sort((p, n) => {
-        n.date - p.date;
-      });
-      let pkg = {};
-      pkg.covidData = tmp;
-      let response = h.response(pkg);
+      for (let key of Object.keys(tmp)) {
+        tmp[key].sort((p, n) => {
+          return new Date(p.date) - new Date(n.date);
+        });
+      }
+      let response = h.response({ covidData: tmp });
       return response;
     } catch (e) {
       console.log("failed");
