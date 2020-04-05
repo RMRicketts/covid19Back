@@ -98,6 +98,7 @@ module.exports.getData = {
               map[d.date][key] = d[key];
             }
           }
+          d.date = new Date(d.date);
         }
       }
       for (let date of Object.keys(map)) {
