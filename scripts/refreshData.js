@@ -1,3 +1,3 @@
-const relaod = require('./postCovidData.js')
+const reload = require('./postCovidData.js')
 
 reload();

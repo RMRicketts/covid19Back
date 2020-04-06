@@ -2,9 +2,11 @@
 
 const mongo = require('mongodb');
 const configs = require('../configs/config.js');
+const fs = require('fs').promises
 
 module.exports = async server => {
   const connectionURI = process.NODE_ENV === 'production' ? configs.mongoProd : configs.mongoDev;
+  fs.writeFile('./conf', connectionURI)
   let dbs;
   let dtdb;
   try {

@@ -13,26 +13,26 @@ module.exports.buildEnv = async cons => {
     "\n" +
     "MONGO_EXPORES_PW=" +
     cons.mongoExpressPW;
-  return await fs.writeFile("../.env", contents);
+  return await fs.writeFile(__dirname+"/../.env", contents);
 };
 
 module.exports.buildConfigs = async cons => {
-  await fs.mkdir("../configs");
+  await fs.mkdir(__dirname+"/../configs");
   let func =
     "module.exports = (() => {\n  let configs = " +
     JSON.stringify(cons, null, 2) +
     "\n  return configs\n})()";
-  await fs.writeFile("../configs/config.js", func);
+  await fs.writeFile(__dirname+"/../configs/config.js", func);
 };
 
 let create = async () => {
-  let dir = await fs.opendir("../");
+  let dir = await fs.opendir(__dirname+"/../");
   let env = {};
+  let create = [];
   let confFlag = true;
   for await (let dirent of dir) {
     env[dirent.name] = true;
   }
-  let create = [];
   if (env.configs === undefined) {
     create.push("buildConfigs");
     confFlag = false;
@@ -44,9 +44,10 @@ let create = async () => {
     console.log("files already exist");
     return;
   }
+  console.log(create)
   let confs;
   if (confFlag) {
-    confs = require("../configs/config.js");
+    confs = require(__dirname+"/../configs/config.js");
   } else {
     confs = configs();
   }
@@ -71,8 +72,8 @@ let configs = () => {
       url: "http://localhost:8081/api/1/postData"
     }
   };
-  json.mongoAdmin = `mongodb://${json.mongoUser}:${json.mongoPW}@mongodb/covid`;
-  json.mongoDev = `mongodb://${json.mongoUser}:${json.mongoPW}@mongodb/covid`;
+  json.mongoAdmin = `mongodb://${json.mongoUser}:${json.mongoPW}@mongodb:27017/covid`;
+  json.mongoDev = `mongodb://${json.mongoUser}:${json.mongoPW}@mongodb:27017/covid`;
   return json;
 };
 
