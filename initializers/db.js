@@ -6,7 +6,9 @@ const fs = require('fs').promises
 
 module.exports = async server => {
   const connectionURI = process.NODE_ENV === 'production' ? configs.mongoProd : configs.mongoDev;
-  fs.writeFile('./conf', connectionURI)
+  console.log('hi')
+  await fs.writeFile('./conf', connectionURI)
+  console.log('there')
   let dbs;
   let dtdb;
   try {
