@@ -1,10 +1,6 @@
 "use strict";
 const axios = require("axios");
 const { covidInfo } = require("../configs/config.js");
-/*const fs = require("fs").promises;
-const path =
-  "/Users/robertricketts/.jenkins/workspace/covid19-update/csse_covid_19_data/csse_covid_19_daily_reports";
-  */
 
 let upload = async () => {
   let goog = {
@@ -45,4 +41,4 @@ let upload = async () => {
   }
 };
 
-upload();
+module.exports = upload;

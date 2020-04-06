@@ -4,6 +4,7 @@ const Hapi = require("@hapi/hapi");
 const actions = require("./actions");
 const initialize = require("./initializers");
 const qs = require("qs");
+const reloadMongo = require("./scripts/postCovidData.js");
 
 process.on("unhandledRejection", err => {
   console.log(err);
@@ -36,7 +37,10 @@ const init = async () => {
   let server = Hapi.server(options);
 
   server.ext(`onPreResponse`, (request, h) => {
-    if (request.response !== undefined && typeof request.response.header !== 'object') {
+    if (
+      request.response !== undefined &&
+      typeof request.response.header !== "object"
+    ) {
       request.response.header("Access-Control-Allow-Origin", "*");
       request.response.header("Access-Control-Allow-Headers", "accesstoken");
     }
@@ -50,6 +54,7 @@ const init = async () => {
   await server.start();
 
   console.log("Server is running on %s", server.info.uri);
+  reloadMongo();
 };
 
 init();

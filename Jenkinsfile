@@ -4,7 +4,7 @@ pipeline {
     stage('post to api'){
       steps {
         sh 'npm install'
-        sh 'node ./scripts/postCovidData.js'
+        sh 'node ./scripts/refreshData.js'
       }
     }
   }
