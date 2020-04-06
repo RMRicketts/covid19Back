@@ -18,6 +18,8 @@ services:
 
   node-app:
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8081:8081"
