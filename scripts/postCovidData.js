@@ -29,6 +29,9 @@ let upload = async () => {
         "-" +
         e.date.toString().substr(6, 2)
     );
+    if(e.recovered === undefined || e.recovered === null){
+      e.recovered = 0
+    }
   }
 
   pkg.data.data = response.data;

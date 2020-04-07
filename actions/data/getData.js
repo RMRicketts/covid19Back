@@ -23,6 +23,7 @@ module.exports.getData = {
                   date: "$date",
                   state: "$state",
                   positive: "$positive",
+                  recovered: "$recovered",
                   negative: "$negative",
                   pending: "$pending",
                   hospitalizedCurrently: "$hospitalizedCurrently",
@@ -32,8 +33,6 @@ module.exports.getData = {
                   onVentilatorCurrently: "$onVentilatorCurrently",
                   onVentilatorCumulative: "$onVentilatorCumulative",
                   recovered: "$recovered",
-                  hash: "$hash",
-                  dateChecked: "$dateChecked",
                   death: "$death",
                   hospitalized: "$hospitalized",
                   total: "$total",
@@ -57,6 +56,7 @@ module.exports.getData = {
         "positive",
         "negative",
         "pending",
+        "recovered",
         "hospitalizedCurrently",
         "hospitalizedCumulative",
         "inIcuCurrently",
@@ -91,10 +91,13 @@ module.exports.getData = {
           }
           for (let key of Object.keys(d)) {
             if (intKeys.indexOf(key) > 0) {
-              let num = d[key] === null ? 0 : Number(d[key]);
-              map[d.date][key] = map[d.date][key] + num;
+              if (d[key] === null) {
+                d[key] = 0;
+              } else {
+                d[key] = Number(d[key]);
+              }
+              map[d.date][key] = map[d.date][key] + d[key];
             } else {
-              d.state = "United States";
               map[d.date][key] = d[key];
             }
           }
@@ -104,6 +107,7 @@ module.exports.getData = {
       for (let date of Object.keys(map)) {
         let d = new Date(date);
         map[date].date = d;
+        map[date].state = "United States";
         tmp["United States"].push({ date: new Date(date), ...map[date] });
       }
       for (let key of Object.keys(tmp)) {
