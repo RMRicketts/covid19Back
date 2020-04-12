@@ -87,7 +87,10 @@ module.exports.uploadData = {
   method: "POST",
   path: "/api/1/postData",
   options: {
-    pre: [require("../../modules/auth/auth.js")]
+    pre: [require("../../modules/auth/auth.js")],
+    payload: {
+      maxBytes: Number.MAX_SAFE_INTEGER
+    }
   },
   handler: async (request, h) => {
     const { data } = request.server.app;

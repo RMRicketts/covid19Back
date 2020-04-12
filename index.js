@@ -4,7 +4,7 @@ const Hapi = require("@hapi/hapi");
 const actions = require("./actions");
 const initialize = require("./initializers");
 const qs = require("qs");
-const reloadMongo = require("./scripts/postCovidData.js");
+const reloadMongo = require("./scripts/refreshData.js");
 
 process.on("unhandledRejection", err => {
   console.log(err);
@@ -39,7 +39,7 @@ const init = async () => {
   server.ext(`onPreResponse`, (request, h) => {
     if (
       request.response !== undefined &&
-      typeof request.response.header !== "object"
+      typeof request.response.header === "object"
     ) {
       request.response.header("Access-Control-Allow-Origin", "*");
       request.response.header("Access-Control-Allow-Headers", "accesstoken");

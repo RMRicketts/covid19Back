@@ -3,10 +3,15 @@ const axios = require("axios");
 const { covidInfo } = require("../configs/config.js");
 
 let upload = async () => {
-  let goog = {
+  let googStates = {
     method: "GET",
     url: "https://covidtracking.com/api/states/daily"
   };
+
+  let googUS = {
+    method: "GET",
+    url: "https://covidtracking.com/api/us/daily"
+  }
 
   let pkg = {
     method: "POST",
@@ -19,7 +24,13 @@ let upload = async () => {
     }
   };
 
-  let response = await axios(goog);
+  let response = await axios(googStates);
+  let us = await axios(googUS);
+
+  for(let i of  us.data){
+    i.state = "United States"
+    response.data.push(i)
+  }
 
   for (let e of response.data) {
     e.date = new Date(

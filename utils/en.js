@@ -1,11 +1,15 @@
-const crypto = require('crypto');
-const {dtbackHashAlg, dtbackCipherAlg, dtbackDefaultSalt} = require('../configs/config.js');
+const crypto = require("crypto");
+const {
+  dtbackHashAlg,
+  dtbackCipherAlg,
+  dtbackDefaulSalt
+} = require("../configs/config.js");
 
 module.exports.hash = (payload, secret) => {
   const hash = crypto
     .createHmac(dtbackHashAlg, secret + dtbackDefaulSalt)
     .update(payload)
-    .digest('hex');
+    .digest("hex");
   return hash;
 };
 
@@ -15,9 +19,9 @@ module.exports.encrypt = (payload, secret, salt) => {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(alg, key, iv);
 
-  let encrypted = cipher.update(payload, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  encrypted = iv.toString('hex') + ':' + encrypted;
+  let encrypted = cipher.update(payload, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  encrypted = iv.toString("hex") + ":" + encrypted;
 
   return encrypted;
 };
