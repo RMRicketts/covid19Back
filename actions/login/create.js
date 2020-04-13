@@ -13,22 +13,32 @@ module.exports.createUser = {
     console.log("create User");
     console.log(payload);
 
-    let user = { ...payload };
+    let userInfo = { ...payload };
+    let user = {};
+    user.userName = userInfo.userName;
+    user.pw = userInfo.pw;
     user.created = new Date();
 
     let salt = user.userName + user.created.toString();
     user.pw = hash(user.pw, salt);
 
     try {
-      await accounts.insertOne(user);
+      let res = await accounts.updateOne(
+        { userName: user.userName },
+        { $setOnInsert: user },
+        { upsert: true }
+      );
+      if (res.result.upserted === undefined) {
+        return Boom.notAcceptable("User already exists");
+      }
     } catch (e) {
-      return Boom.notAcceptable("User already exists");
+      return Boom.badImplementation();
     }
 
     const accessToken = sign({ userName: user.userName });
 
     console.log(accessToken);
 
-    return { accessToken };
+    return { accessToken: accessToken };
   }
 };
