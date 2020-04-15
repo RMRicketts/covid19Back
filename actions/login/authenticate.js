@@ -8,9 +8,9 @@ module.exports.login = {
   path: "/api/1/login",
   handler: async (request, h) => {
     let { accounts } = request.server.app;
-    let { params, payload } = request;
+    let { payload } = request;
 
-    console.log(params);
+    console.log(payload);
 
     let preProfile = await accounts.findOne(
       { userName: new RegExp(payload.userName,'i') },
