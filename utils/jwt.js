@@ -11,12 +11,10 @@ module.exports.sign = payload => {
   let pkg = {
     data: en(JSON.stringify(payload), dtbackDefaultSecret, dtbackDefaultSalt)
   };
-  let token = {}
-  let dt = new Date()
-  dt.setHours( dt.getHours() + 1 )
-  token.expiresAt = dt
+  let token = {};
+  token.expiresAt = Date.now() + 60 * 60 * 1000;
   token.Authorization = jwt.sign(pkg, dtbackPK, { expiresIn: 60 * 60 });
-  return token
+  return token;
 };
 
 module.exports.verify = token => {
