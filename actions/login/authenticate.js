@@ -13,7 +13,7 @@ module.exports.login = {
     console.log(params);
 
     let preProfile = await accounts.findOne(
-      { userName: payload.userName },
+      { userName: new RegExp(payload.userName,'i') },
       { userName: 1, created: 1, pw: 1, _id: 0 }
     );
     if (preProfile === null) {

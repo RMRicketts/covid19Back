@@ -24,7 +24,7 @@ module.exports.createUser = {
 
     try {
       let res = await accounts.updateOne(
-        { userName: user.userName },
+        { userName: new RegExp(user.userName, "i") },
         { $setOnInsert: user },
         { upsert: true }
       );
