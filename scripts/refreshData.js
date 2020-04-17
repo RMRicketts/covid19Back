@@ -11,7 +11,7 @@ const delay = period => {
 const loop = async () => {
   reload()
     .then(() => {
-      return delay(8 * 60 * 60 * 1000);
+      return delay(1 * 60 * 60 * 1000);
     })
     .then(() => {
       return loop();
