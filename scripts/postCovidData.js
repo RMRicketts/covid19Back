@@ -32,19 +32,6 @@ let upload = async () => {
     response.data.push(i)
   }
 
-  for (let e of response.data) {
-    e.date = new Date(
-      e.date.toString().substr(0, 4) +
-        "-" +
-        e.date.toString().substr(4, 2) +
-        "-" +
-        e.date.toString().substr(6, 2)
-    );
-    if(e.recovered === undefined || e.recovered === null){
-      e.recovered = 0
-    }
-  }
-
   pkg.data.data = response.data;
 
   let ref = [];

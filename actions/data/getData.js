@@ -13,8 +13,14 @@ module.exports.getData = {
     const { query } = request;
     console.log("request made to getData", query);
     try {
+      let startDate = new Date(new Date().setDate(new Date().getDate() - 21));
       let set = await data
         .aggregate([
+          {
+            $match: {
+              date: { $gte: startDate }
+            }
+          },
           {
             $group: {
               _id: "$state",
@@ -50,6 +56,11 @@ module.exports.getData = {
           { $sort: { _id: 1 } }
         ])
         .toArray();
+
+      if (set.length === 0) {
+        console.log(set);
+        return Boom.badImplementation();
+      }
 
       let tmp = { "United States": [] };
 
@@ -96,6 +107,20 @@ module.exports.uploadData = {
     const { data } = request.server.app;
     const { payload } = request;
     console.log("request made to uploadData");
+
+    for (let e of payload.data) {
+      e.date = new Date(
+        e.date.toString().substr(0, 4) +
+          "-" +
+          e.date.toString().substr(4, 2) +
+          "-" +
+          e.date.toString().substr(6, 2)
+      );
+      if (e.recovered === undefined || e.recovered === null) {
+        e.recovered = 0;
+      }
+    }
+
     try {
       await data.deleteMany();
       await data.insertMany(payload.data);
