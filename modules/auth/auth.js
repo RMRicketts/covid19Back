@@ -1,6 +1,6 @@
 const Boom = require("@hapi/boom");
 const jwt = require("../../utils/jwt.js");
-const { covidInfo, dtbackPK } = require("../../configs/config.js");
+const { covidInfo } = require("../../configs/config.js");
 
 module.exports = {
   assign: "authProfile",
@@ -10,13 +10,13 @@ module.exports = {
       return { authorized: true };
     }
     try {
-      accessToken = req.headers.Authorization.split(" ")[0];
+      accessToken = req.headers.authorization.split(" ")[1];
     } catch (e) {
       return Boom.unauthorized("Invalid Token");
     }
     let payload;
     try {
-      payload = jwt.verify(payload, dtbackPK);
+      payload = jwt.verify(accessToken);
     } catch (e) {
       if (e.message === "jwt expired") {
         let error = Boom.unathorized("Access token expired");

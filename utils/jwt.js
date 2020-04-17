@@ -11,13 +11,16 @@ module.exports.sign = payload => {
   let pkg = {
     data: en(JSON.stringify(payload), dtbackDefaultSecret, dtbackDefaultSalt)
   };
-  let token = {};
-  token.expiresAt = Date.now() + 60 * 60 * 1000;
-  token.Authorization = jwt.sign(pkg, dtbackPK, { expiresIn: 60 * 60 });
-  return token;
+  return jwt.sign(pkg, dtbackPK, { expiresIn: 60 * 60 });
 };
 
 module.exports.verify = token => {
-  let pkg = jwt.verify(token, dtbackPK);
+  let pkg;
+  try {
+    pkg = jwt.verify(token, dtbackPK);
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
   return JSON.parse(de(pkg.data, dtbackDefaultSecret, dtbackDefaultSalt));
 };
