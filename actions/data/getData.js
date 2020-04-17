@@ -12,9 +12,10 @@ module.exports.getData = {
     const { data } = request.server.app;
     const { query } = request;
     console.log("request made to getData", query);
+    let set;
     try {
       let startDate = new Date(new Date().setDate(new Date().getDate() - 21));
-      let set = await data
+      set = await data
         .aggregate([
           {
             $match: {
@@ -56,41 +57,39 @@ module.exports.getData = {
           { $sort: { _id: 1 } }
         ])
         .toArray();
-
-      if (set.length === 0) {
-        console.log(set);
-        return Boom.badImplementation();
-      }
-
-      let tmp = { "United States": [] };
-
-      for (let obj of set) {
-        if (tmp[obj._id] === undefined) {
-          tmp[obj._id] = [];
-        }
-        for (let d of obj.data) {
-          d.date = new Date(d.date);
-          tmp[obj._id].push(d);
-        }
-      }
-      for (let key of Object.keys(tmp)) {
-        tmp[key].sort((p, n) => {
-          return new Date(p.date) - new Date(n.date);
-        });
-        let state = "";
-        let num = 0;
-        for (let d of tmp[key]) {
-          num = num + d.deathIncrease;
-          d.death = num;
-        }
-      }
-      let response = h.response({ covidData: tmp });
-      return response;
     } catch (e) {
       console.log(e);
       console.log("failed");
       return Boom.badImplementation();
     }
+
+    if (set.length === 0) {
+      console.log("query failed with empty set");
+      return Boom.badImplementation();
+    }
+
+    let tmp = {};
+
+    for (let obj of set) {
+      if (tmp[obj._id] === undefined) {
+        tmp[obj._id] = obj.data;
+      }
+    }
+
+    for (let key of Object.keys(tmp)) {
+      tmp[key].sort((p, n) => {
+        return p.date - n.date;
+      });
+      let state = "";
+      let num = 0;
+      for (let d of tmp[key]) {
+        num = num + d.deathIncrease;
+        d.death = num;
+      }
+    }
+
+    let response = h.response({ covidData: tmp });
+    return response;
   }
 };
 
