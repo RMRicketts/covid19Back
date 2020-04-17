@@ -10,10 +10,15 @@ module.exports.login = {
     let { accounts } = request.server.app;
     let { payload } = request;
 
-    console.log(payload);
+    console.log(payload.userName, "attempted login");
+
+    if (payload.userName === undefined || payload.pw === undefined) {
+      console.log(payload.userName, "invalid payload");
+      return Boom.badRequest();
+    }
 
     let preProfile = await accounts.findOne(
-      { userName: new RegExp(payload.userName,'i') },
+      { userName: new RegExp(payload.userName, "i") },
       { userName: 1, created: 1, pw: 1, _id: 0 }
     );
     if (preProfile === null) {
@@ -31,7 +36,13 @@ module.exports.login = {
       userName: preProfile.userName
     };
 
-    const accessToken = sign(userProfile);
+    let accessToken;
+    try {
+      accessToken = sign(userProfile);
+    } catch (e) {
+      console.log(e);
+      return Boom.unauthorized();
+    }
 
     return { accessToken };
   }

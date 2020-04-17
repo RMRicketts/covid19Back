@@ -18,7 +18,6 @@ module.exports = {
     try {
       payload = jwt.verify(accessToken);
     } catch (e) {
-      console.log(e)
       if (e.message === "jwt expired") {
         return Boom.unauthorized("Expired Access Token");
       }
