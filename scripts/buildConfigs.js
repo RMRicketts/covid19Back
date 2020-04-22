@@ -72,8 +72,8 @@ let configs = () => {
       url: "http://localhost:8081/api/1/postData"
     }
   };
-  json.mongoAdmin = `mongodb://${json.mongoUser}:${json.mongoPW}@mongo:27017/covid`;
-  json.mongoDev = `mongodb://${json.mongoUser}:${json.mongoPW}@mongo:27017/covid`;
+  json.mongoAdmin = `mongodb://${json.mongoUser}:${json.mongoPW}@mongo:27017/admin`;
+  json.mongoDev = `mongodb://${json.mongoUser}:${json.mongoPW}@mongo:27017/admin`;
   return json;
 };
 
