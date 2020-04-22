@@ -71,6 +71,9 @@ module.exports.getData = {
     let tmp = {};
 
     for (let obj of set) {
+      for (let point of obj.data) {
+        point.active = point.positive - point.recovered - point.death;
+      }
       if (tmp[obj._id] === undefined) {
         tmp[obj._id] = obj.data;
       }
@@ -80,12 +83,6 @@ module.exports.getData = {
       tmp[key].sort((p, n) => {
         return p.date - n.date;
       });
-      let state = "";
-      let num = 0;
-      for (let d of tmp[key]) {
-        num = num + d.deathIncrease;
-        d.death = num;
-      }
     }
 
     let response = h.response({ covidData: tmp });
