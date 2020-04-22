@@ -6,7 +6,7 @@ pipeline {
         sh '/usr/local/bin/docker-compose down'
         sh '/usr/bin/docker system prune --all --force'
         sh '/usr/local/bin/node ./scripts/buildConfigs.js'
-        sh '/usr/local/bin/docker-compose -d up'
+        sh '/usr/local/bin/docker-compose up -d'
       }
     }
   }
