@@ -5,7 +5,9 @@ pipeline {
       steps {
         sh 'npm install'
         sh 'node ./scripts/buildConfigs.js'
-        sh 'node ./scripts/refreshData.js'
+        sh 'docker-compose down'
+        sh 'docker system prune --all --force'
+        sh 'docker-compose -d up'
       }
     }
   }
