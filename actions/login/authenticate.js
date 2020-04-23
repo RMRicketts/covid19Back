@@ -22,7 +22,7 @@ module.exports.login = {
       { userName: 1, created: 1, pw: 1, _id: 0 }
     );
     if (preProfile === null) {
-      return Boom.unathorized("Invalid login");
+      return Boom.unauthorized("Invalid login");
     }
 
     let salt = preProfile.userName + preProfile.created.toString();
